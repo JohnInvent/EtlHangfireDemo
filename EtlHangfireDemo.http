@@ -1,0 +1,6 @@
+@EtlHangfireDemo_HostAddress = http://localhost:5017
+
+GET {{EtlHangfireDemo_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
