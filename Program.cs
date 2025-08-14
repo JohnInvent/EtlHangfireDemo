@@ -1,15 +1,21 @@
-using EtlHangfireDemo.Data;
+﻿using EtlHangfireDemo.Data;
 using Hangfire;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Serilog;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+// ✅ Agrega Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "ETL API", Version = "v1" });
+});
 
-// Conexi�n a SQL Server
+
+// Conexión a SQL Server
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -45,7 +51,7 @@ using (var scope = app.Services.CreateScope())
     // Ejecutar una vez al iniciar
     job.Ejecutar();
 
-    // Programar ejecuci�n diaria
+    // Programar ejecución diaria
     RecurringJob.AddOrUpdate("etl-pacientes", () => job.Ejecutar(), "*/5 * * * *");
 }
 app.Run();

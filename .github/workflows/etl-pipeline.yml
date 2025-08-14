@@ -1,4 +1,4 @@
-name: ETL Pipeline (.NET 8 + Hangfire)
+name: ETL Pipeline (.NET 9 + Hangfire)
 
 on:
   push:
