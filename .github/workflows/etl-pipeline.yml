@@ -1,0 +1,29 @@
+name: ETL Pipeline (.NET 8 + Hangfire)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 🔄 Checkout del repositorio
+      uses: actions/checkout@v3
+
+    - name: 🧰 Instalar .NET 8
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: 📦 Restaurar dependencias
+      run: dotnet restore
+
+    - name: 🛠️ Compilar el proyecto
+      run: dotnet build --no-restore --configuration Release
+
+    - name: 🧪 Ejecutar pruebas (si tienes)
+      run: dotnet test --no-build --verbosity normal
